@@ -39,7 +39,7 @@ class ChoresTableViewController: UITableViewController {
         choreController.addChore("Wipe Table", frequency: .monthly, startDate: Date())
         
         title = Constants.title
-        let settingsButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openSettings))
+        let settingsButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(openSettings))
         navigationItem.leftBarButtonItem = settingsButton
     }
     
