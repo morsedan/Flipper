@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  Chores
-//
-//  Created by danmorse on 1/2/22.
-//
-
 import UIKit
 
 @main

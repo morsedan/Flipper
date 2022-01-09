@@ -1,10 +1,3 @@
-//
-//  ChoresUITests.swift
-//  ChoresUITests
-//
-//  Created by danmorse on 1/2/22.
-//
-
 import XCTest
 
 class ChoresUITests: XCTestCase {

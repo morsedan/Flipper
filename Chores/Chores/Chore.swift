@@ -28,16 +28,6 @@ enum ChoreFrequency: Codable {
     case monthly
     case quarterly
     case yearly
-    
-    var interval: Int {
-        switch self {
-        case .daily: return 86_400
-        case .weekly: return 86_400 * 7
-        case .monthly: return 0
-        case .quarterly: return 0
-        case .yearly: return 0
-        }
-    }
 }
 
 struct ChoreOccurrence: Codable {
@@ -53,7 +43,6 @@ struct Chore: Equatable, Codable {
     let frequency: ChoreFrequency
     var startDate: Date
     var history: [ChoreOccurrence] = []
-    
     
     static func == (lhs: Chore, rhs: Chore) -> Bool {
         return lhs.choreID == rhs.choreID

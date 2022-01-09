@@ -1,10 +1,3 @@
-//
-//  AddItemViewController.swift
-//  Chores
-//
-//  Created by danmorse on 1/2/22.
-//
-
 import UIKit
 
 class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -64,7 +57,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         navigationController?.popViewController(animated: true)
     }
     
-    func getFrequency(forIndex index: Int) -> ChoreFrequency {
+    private func getFrequency(forIndex index: Int) -> ChoreFrequency {
         switch index {
         case 0: return .daily
         case 1: return .weekly

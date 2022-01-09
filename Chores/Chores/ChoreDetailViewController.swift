@@ -1,10 +1,3 @@
-//
-//  ChoreDetailViewController.swift
-//  Chores
-//
-//  Created by danmorse on 1/7/22.
-//
-
 import UIKit
 
 class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -18,11 +11,11 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     var choreController: ChoreController?
     var chore: Chore?
-    var dateFormatter: DateFormatter {
+    private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-DD"
+        formatter.dateFormat = "M/D/yyyy"
         return formatter
-    }
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,16 +25,13 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         updateUI()
     }
     
-    func configureStatusLabel() {
+    private func configureStatusLabel() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(statusLabelTapped))
         statusLabel.isUserInteractionEnabled = true
         statusLabel.addGestureRecognizer(tapGesture)
     }
     
-    @objc func statusLabelTapped(sender: UITapGestureRecognizer) {
-        guard let sender = sender.view as? UILabel,
-              let text = sender.text else { return }
-        
+    @objc func statusLabelTapped() {
         guard let chore = chore else { return }
         switch chore.status {
         case .unclaimed: showUserAlert()
@@ -50,7 +40,7 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func showUserAlert() {
+    private func showUserAlert() {
         guard let chore = chore,
               let choreController = choreController,
               choreController.doers.count >= 1 else { return }
@@ -72,7 +62,7 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         navigationController?.present(userAlert, animated: true, completion: nil)
     }
     
-    func showStatusAlert() {
+    private func showStatusAlert() {
         guard let chore = chore else { return }
         let updatedChore = choreController?.completeChore(chore)
         self.chore = updatedChore
@@ -82,13 +72,13 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         statusLabel.text = "Status: \(occurrence.status.string)"
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.reuseIdentifier)
     }
     
-    func updateUI() {
+    private func updateUI() {
         guard let chore = chore else { return }
         nameLabel.text = chore.title
         statusLabel.text = "Status: \(chore.status.string)"

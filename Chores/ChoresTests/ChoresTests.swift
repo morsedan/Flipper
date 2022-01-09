@@ -1,10 +1,3 @@
-//
-//  ChoresTests.swift
-//  ChoresTests
-//
-//  Created by danmorse on 1/2/22.
-//
-
 import XCTest
 @testable import Chores
 

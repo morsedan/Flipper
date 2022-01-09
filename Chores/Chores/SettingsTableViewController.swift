@@ -1,12 +1,12 @@
 import UIKit
 
-class SettingsTableViewController: UITableViewController {
+class SettingsTableViewController: UITableViewController, UIActionSheetDelegate {
     var choreController: ChoreController?
-    var dateFormatter: DateFormatter {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "M-D-yyyy"
-            return formatter
-        }
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M/D/yyyy"
+        return formatter
+    }()
     
 
     override func viewDidLoad() {
@@ -19,7 +19,7 @@ class SettingsTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func configure() {
+    private func configure() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
         self.navigationItem.rightBarButtonItem = addButton
@@ -87,8 +87,4 @@ class SettingsTableViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-}
-
-extension SettingsTableViewController: UIActionSheetDelegate {
-    
 }

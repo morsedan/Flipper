@@ -64,7 +64,7 @@ class ChoreController {
         return allChores[index]
     }
     
-    func setNewDateForChore(atIndex index: Int) {
+    private func setNewDateForChore(atIndex index: Int) {
         let chore = allChores[index]
         let startDate = chore.startDate
         var components = DateComponents()
@@ -140,7 +140,7 @@ class ChoreController {
             let decoder = PropertyListDecoder()
             allChores = try decoder.decode([Chore].self, from: choreData).sorted { $0.title < $1.title }
             
-            for (index, chore) in allChores.enumerated() {
+            for index in 0..<allChores.count {
                 while allChores[index].startDate < Calendar.current.startOfDay(for: Date()) {
                     print("setting date")
                     setNewDateForChore(atIndex: index)
