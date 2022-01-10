@@ -1,6 +1,6 @@
 import Foundation
 
-struct ChoreDoer: Equatable {
-    let name: String
-    let id: UUID = UUID()
+struct ChoreDoer: Equatable, Codable {
+    var name: String
+    var choreDoerID: UUID
 }

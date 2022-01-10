@@ -26,25 +26,12 @@ class ChoresTableViewController: UITableViewController {
     }
 
     func configure() {
-        choreController.addChore("Sweep", frequency: .daily, startDate: Date())
-        let dave = ChoreDoer(name: "Dave")
-        let bill = ChoreDoer(name: "Bill")
-        choreController.chores[0].history = [
-            ChoreOccurence(date: Date(), doer: dave, status: .claimed(doer: dave)),
-            ChoreOccurence(date: Date(), doer: bill, status: .done(doer: bill))
-            ]
-        choreController.chores[0].status = .claimed(doer: bill)
-        choreController.addChore("Vacuum", frequency: .weekly, startDate: Date())
-        choreController.chores[1].status = .done(doer: dave)
-        choreController.addChore("Wipe Table", frequency: .monthly, startDate: Date())
-        
         title = Constants.title
         let settingsButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(openSettings))
         navigationItem.leftBarButtonItem = settingsButton
     }
     
     @objc func openSettings() {
-        print("tapped")
         let settingsTableViewController = SettingsTableViewController()
         settingsTableViewController.choreController = choreController
         navigationController?.pushViewController(settingsTableViewController, animated: true)
@@ -57,13 +44,13 @@ class ChoresTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return choreController.chores.count
+        return choreController.todaysChores.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.choreCellIndentifier, for: indexPath)
         var content = cell.defaultContentConfiguration()
-        let chore = choreController.chores[indexPath.item]
+        let chore = choreController.todaysChores[indexPath.item]
         content.text = chore.title
         cell.backgroundColor = {
             switch chore.status {
@@ -79,7 +66,8 @@ class ChoresTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let choreDetailViewController = storyboard?.instantiateViewController(withIdentifier: Constants.choreDetailViewController) as? ChoreDetailViewController else { return }
-        choreDetailViewController.chore = choreController.chores[indexPath.item]
+        choreDetailViewController.chore = choreController.todaysChores[indexPath.item]
+        choreDetailViewController.choreController = choreController
         
         navigationController?.pushViewController(choreDetailViewController, animated: true)
     }

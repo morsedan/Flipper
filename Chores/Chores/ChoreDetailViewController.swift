@@ -16,6 +16,7 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    var choreController: ChoreController?
     var chore: Chore?
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -41,15 +42,37 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         guard let sender = sender.view as? UILabel,
               let text = sender.text else { return }
         
-        print(text)
+        guard let chore = chore else { return }
+        switch chore.status {
+        case .unclaimed: showUserAlert()
+        case .claimed(_): showStatusAlert()
+        case .done(_): break
+        }
     }
     
     func showUserAlert() {
-        
+        guard let chore = chore,
+              let choreController = choreController,
+              choreController.doers.count >= 1 else { return }
+        let userAlert = UIAlertController(title: "Claim \(chore.title)?", message: "Select your name below to claim this chore.", preferredStyle: .actionSheet)
+        for doer in choreController.doers {
+            let button = UIAlertAction(title: doer.name, style: .default) { _ in
+                let updatedChore = choreController.claimChore(chore, forChoreID: doer.choreDoerID)
+                self.chore = updatedChore
+                self.updateUI()
+            }
+            userAlert.addAction(button)
+        }
+        navigationController?.present(userAlert, animated: true, completion: nil)
     }
     
     func showStatusAlert() {
-        
+        guard let chore = chore else { return }
+        let updatedChore = choreController?.completeChore(chore)
+        self.chore = updatedChore
+        updateUI()
+        guard let occurrence = chore.history.last else { return }
+        statusLabel.text = "Status: \(occurrence.status.string)"
     }
     
     func configureTableView() {
@@ -61,8 +84,8 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
     func updateUI() {
         guard let chore = chore else { return }
         nameLabel.text = chore.title
-//        var doer = chore.claimedBy?.name ?? ""
         statusLabel.text = "Status: \(chore.status.string)"
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -74,7 +97,7 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier, for: indexPath)
         var content = cell.defaultContentConfiguration()
         guard let chore = chore else { return UITableViewCell() }
-        let choreOccurrence = chore.history[indexPath.item]
+        let choreOccurrence = chore.history.reversed()[indexPath.item]
         
         content.text = "\(dateFormatter.string(from: choreOccurrence.date)), \(choreOccurrence.status.string)"
         cell.contentConfiguration = content
