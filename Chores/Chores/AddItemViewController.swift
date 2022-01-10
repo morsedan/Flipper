@@ -52,7 +52,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @IBAction func addButtonTapped(_ sender: Any) {
-        guard let text = textField.text else { return }
+        guard let text = textField.text,
+              !text.isEmpty else { return }
         if segmentedControl.selectedSegmentIndex == 0 {
             let index = pickerView.selectedRow(inComponent: 0)
             let frequency = getFrequency(forIndex: index)
