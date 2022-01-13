@@ -53,7 +53,7 @@ class ChoreController {
     }
     
     func completeChore(_ chore: Chore) -> Chore {
-        guard let index = todaysChores.firstIndex(of: chore),
+        guard let index = allChores.firstIndex(of: chore),
               let doer = chore.status.doer else { return chore }
         let choreOccurence = ChoreOccurrence(date: Date(), doer: doer, status: .done(doer: doer))
         allChores[index].status = .done(doer: doer)
