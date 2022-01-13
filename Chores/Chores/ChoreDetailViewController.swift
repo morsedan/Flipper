@@ -63,6 +63,12 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
             }
             userAlert.addAction(button)
         }
+        
+        if let popoverController = userAlert.popoverPresentationController {
+            popoverController.sourceView = statusLabel
+            popoverController.sourceRect = statusLabel.bounds
+        }
+        
         navigationController?.present(userAlert, animated: true, completion: nil)
     }
     
@@ -71,7 +77,8 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let updatedChore = choreController?.completeChore(chore)
         self.chore = updatedChore
         updateUI()
-        guard let occurrence = chore.history.last else { return }
+        guard let updatedChore = updatedChore,
+              let occurrence = updatedChore.history.last else { return }
         statusLabel.text = "Status: \(occurrence.status.string)"
     }
     
