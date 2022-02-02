@@ -25,7 +25,7 @@ class ChoresTableViewController: UITableViewController {
     }
     
     @objc func openSettings() {
-        let settingsTableViewController = SettingsTableViewController()
+        let settingsTableViewController = SettingsTableViewController(style: .insetGrouped)
         settingsTableViewController.choreController = choreController
         navigationController?.pushViewController(settingsTableViewController, animated: true)
     }

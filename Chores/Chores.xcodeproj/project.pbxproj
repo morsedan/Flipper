@@ -22,6 +22,7 @@
 		5756CF7E2782661800062E47 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5756CF7D2782661800062E47 /* SettingsTableViewController.swift */; };
 		5756CF84278295B100062E47 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5756CF83278295B100062E47 /* AddItemViewController.swift */; };
 		5756CF8627893F1700062E47 /* ChoreDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5756CF8527893F1700062E47 /* ChoreDetailViewController.swift */; };
+		5771E416279B869700EB1880 /* FileProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5771E415279B869600EB1880 /* FileProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		5756CF7D2782661800062E47 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5756CF83278295B100062E47 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		5756CF8527893F1700062E47 /* ChoreDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreDetailViewController.swift; sourceTree = "<group>"; };
+		5771E415279B869600EB1880 /* FileProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				5756CF7D2782661800062E47 /* SettingsTableViewController.swift */,
 				5756CF83278295B100062E47 /* AddItemViewController.swift */,
 				5756CF7527823F9500062E47 /* ChoreController.swift */,
+				5771E415279B869600EB1880 /* FileProvider.swift */,
 				5756CF7727823FC900062E47 /* Chore.swift */,
 				5756CF792782432900062E47 /* ChoreDoer.swift */,
 				5756CF4727823DC300062E47 /* Main.storyboard */,
@@ -280,6 +283,7 @@
 				5756CF7627823F9500062E47 /* ChoreController.swift in Sources */,
 				5756CF7827823FC900062E47 /* Chore.swift in Sources */,
 				5756CF7E2782661800062E47 /* SettingsTableViewController.swift in Sources */,
+				5771E416279B869700EB1880 /* FileProvider.swift in Sources */,
 				5756CF4227823DC300062E47 /* AppDelegate.swift in Sources */,
 				5756CF84278295B100062E47 /* AddItemViewController.swift in Sources */,
 				5756CF8627893F1700062E47 /* ChoreDetailViewController.swift in Sources */,

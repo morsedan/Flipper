@@ -11,6 +11,8 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     var choreController: ChoreController?
     var chore: Chore?
+    var shouldAllowStatusChange: Bool = true
+    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "M/D/yyyy"
@@ -28,7 +30,9 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
     private func configureStatusLabel() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(statusLabelTapped))
         statusLabel.isUserInteractionEnabled = true
-        statusLabel.addGestureRecognizer(tapGesture)
+        if shouldAllowStatusChange {
+            statusLabel.addGestureRecognizer(tapGesture)
+        }
     }
     
     @objc func statusLabelTapped() {

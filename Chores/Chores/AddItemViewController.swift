@@ -1,6 +1,11 @@
 import UIKit
 
 class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+    enum Constants {
+        static let chorePlaceholder = "Chore Title"
+        static let namePlaceholder = "Person's Name"
+    }
+    
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var pickerView: UIPickerView!
@@ -15,6 +20,9 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         super.viewDidLoad()
         pickerView.dataSource = self
         pickerView.delegate = self
+        textField.delegate = self
+        textField.becomeFirstResponder()
+        textField.placeholder = Constants.chorePlaceholder
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -30,17 +38,22 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @IBAction func didChangeItemToAdd(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 1:
-            pickerView.isHidden = true
-            datePicker.isHidden = true
-            frequencyLabel.isHidden = true
-            dateLabel.isHidden = true
-        default:
-            pickerView.isHidden = false
-            datePicker.isHidden = false
-            frequencyLabel.isHidden = false
-            dateLabel.isHidden = false
+        textField.text = ""
+        UIView.animate(withDuration: 0.275) {
+            switch sender.selectedSegmentIndex {
+            case 1:
+                self.pickerView.isHidden = true
+                self.datePicker.isHidden = true
+                self.frequencyLabel.isHidden = true
+                self.dateLabel.isHidden = true
+                self.textField.placeholder = Constants.namePlaceholder
+            default:
+                self.pickerView.isHidden = false
+                self.datePicker.isHidden = false
+                self.frequencyLabel.isHidden = false
+                self.dateLabel.isHidden = false
+                self.textField.placeholder = Constants.chorePlaceholder
+            }
         }
     }
     
@@ -65,5 +78,17 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         case 3: return .quarterly
         default: return .yearly
         }
+    }
+}
+
+extension AddItemViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch segmentedControl.selectedSegmentIndex {
+        case 1:
+            addButtonTapped(textField)
+        default:
+            break
+        }
+        return false
     }
 }

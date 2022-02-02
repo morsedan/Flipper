@@ -1,6 +1,6 @@
 import Foundation
 
-enum ChoreStatus: Codable {
+enum ChoreStatus: Codable, Equatable {
     case unclaimed
     case claimed(doer: ChoreDoer)
     case done(doer: ChoreDoer)
@@ -22,7 +22,7 @@ enum ChoreStatus: Codable {
     }
 }
 
-enum ChoreFrequency: Codable {
+enum ChoreFrequency: Codable, Equatable {
     case daily
     case weekly
     case monthly
@@ -30,7 +30,7 @@ enum ChoreFrequency: Codable {
     case yearly
 }
 
-struct ChoreOccurrence: Codable {
+struct ChoreOccurrence: Codable, Equatable {
     let date: Date
     let doer: ChoreDoer
     let status: ChoreStatus

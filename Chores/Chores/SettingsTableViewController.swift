@@ -1,6 +1,10 @@
 import UIKit
 
 class SettingsTableViewController: UITableViewController, UIActionSheetDelegate {
+    enum Constants {
+        static let choreDetailViewController = "ChoreDetailViewController"
+    }
+    
     var choreController: ChoreController?
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -86,5 +90,22 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             }
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            return
+        default:
+            break
+        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let choreDetailViewController = storyboard.instantiateViewController(withIdentifier: Constants.choreDetailViewController) as? ChoreDetailViewController,
+              let choreController = choreController else { return }
+        choreDetailViewController.chore = choreController.allChores.sorted { $0.startDate < $1.startDate }[indexPath.item]
+        choreDetailViewController.choreController = choreController
+        choreDetailViewController.shouldAllowStatusChange = false
+        
+        navigationController?.pushViewController(choreDetailViewController, animated: true)
     }
 }

@@ -1,15 +1,39 @@
 import Foundation
 
+
+protocol IDProviderProtocol {
+    func id() -> UUID
+}
+
+class IDProvider: IDProviderProtocol {
+    func id() -> UUID {
+        return UUID()
+    }
+}
+
+
+protocol DateProviderProtocol {
+    func isDateInToday(_: Date) -> Bool
+    // TODO: Add static DateFormatter
+}
+
+extension Calendar: DateProviderProtocol {
+    
+}
+
 class ChoreController {
+    let fileProvider: FileProviderProtocol
+    let dateProvider: DateProviderProtocol
+    let idProvider: IDProviderProtocol
+    
     var allChores: [Chore] = []
     var todaysChores: [Chore] {
-        let calendar = Calendar.current
         var chores = allChores.filter { chore in
-            calendar.isDateInToday(chore.startDate)
+            dateProvider.isDateInToday(chore.startDate)
         }
         var completedChores = allChores.filter { chore in
             guard let occurrence = chore.history.last else { return false }
-            return calendar.isDateInToday(occurrence.date) && !calendar.isDateInToday(chore.startDate)
+            return dateProvider.isDateInToday(occurrence.date) && !dateProvider.isDateInToday(chore.startDate)
         }
         for (index, chore) in completedChores.enumerated() {
             if let occurrence = chore.history.last,
@@ -22,13 +46,18 @@ class ChoreController {
     }
     var doers: [ChoreDoer] = []
     
-    init() {
+    init(fileProvider: FileProviderProtocol = FileManager.default,
+         dateProvider: DateProviderProtocol = Calendar.current,
+         idProvider: IDProviderProtocol = IDProvider()) {
+        self.fileProvider = fileProvider
+        self.dateProvider = dateProvider
+        self.idProvider = idProvider
         loadFromPersistentStore()
     }
     
     // MARK: Chores
     func addChore(_ choreTitle: String, frequency: ChoreFrequency, startDate: Date) {
-        let chore = Chore(title: choreTitle, choreID: UUID(), status: .unclaimed, frequency: frequency, startDate: startDate)
+        let chore = Chore(title: choreTitle, choreID: idProvider.id(), status: .unclaimed, frequency: frequency, startDate: startDate)
         allChores.append(chore)
         allChores.sort { $0.title < $1.title }
         saveToPersistentStore()
@@ -64,6 +93,13 @@ class ChoreController {
         return allChores[index]
     }
     
+    func changeDueDateForChore(_ chore: Chore, toDueDate dueDate: Date) -> Chore {
+        guard let index = allChores.firstIndex(of: chore) else { return chore }
+        allChores[index].startDate = dueDate
+        allChores[index].status = .unclaimed
+        return allChores[index]
+    }
+    
     private func setNewDateForChore(atIndex index: Int) {
         let chore = allChores[index]
         let startDate = chore.startDate
@@ -90,6 +126,7 @@ class ChoreController {
     func addDoer(_ doerName: String) {
         let doer = ChoreDoer(name: doerName, choreDoerID: UUID())
         doers.append(doer)
+        doers.sort { $0.name < $1.name }
         saveToPersistentStore()
     }
     
@@ -101,14 +138,14 @@ class ChoreController {
     
     // MARK: Persistance
     private var choresFileURL: URL? {
-        let fm = FileManager.default
-        guard let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        let fp = fileProvider.shared()
+        guard let dir = fp.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         return dir.appendingPathComponent("chores.plist")
     }
     
     private var doersFileURL: URL? {
-        let fm = FileManager.default
-        guard let dir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        let fp = fileProvider.shared()
+        guard let dir = fp.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         return dir.appendingPathComponent("doers.plist")
     }
     
@@ -128,11 +165,11 @@ class ChoreController {
     }
     
     private func loadFromPersistentStore() {
-        let fm = FileManager.default
+        let fp = fileProvider.shared()
         guard let choresFileURL = choresFileURL,
-              fm.fileExists(atPath: choresFileURL.path),
+              fp.fileExists(atPath: choresFileURL.path),
               let doersFileURL = doersFileURL,
-              fm.fileExists(atPath: doersFileURL.path) else { return }
+              fp.fileExists(atPath: doersFileURL.path) else { return }
         
         do{
             let choreData = try Data(contentsOf: choresFileURL)
