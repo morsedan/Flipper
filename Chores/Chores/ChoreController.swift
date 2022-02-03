@@ -17,9 +17,7 @@ protocol DateProviderProtocol {
     // TODO: Add static DateFormatter
 }
 
-extension Calendar: DateProviderProtocol {
-    
-}
+extension Calendar: DateProviderProtocol { }
 
 class ChoreController {
     let fileProvider: FileProviderProtocol
@@ -93,8 +91,9 @@ class ChoreController {
         return allChores[index]
     }
     
-    func changeDueDateForChore(_ chore: Chore, toDueDate dueDate: Date) -> Chore {
-        guard let index = allChores.firstIndex(of: chore) else { return chore }
+    func chooseDueDateForChore(_ chore: Chore, toDueDate dueDate: Date) -> Chore {
+        guard dueDate > Date(),
+              let index = allChores.firstIndex(of: chore) else { return chore }
         allChores[index].startDate = dueDate
         allChores[index].status = .unclaimed
         return allChores[index]

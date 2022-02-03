@@ -15,7 +15,7 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "M/D/yyyy"
+        formatter.dateFormat = "M/d/yyyy"
         return formatter
     }()
     
@@ -39,7 +39,8 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         guard let chore = chore else { return }
         switch chore.status {
         case .unclaimed: showUserAlert()
-        case .claimed(_): showStatusAlert()
+        case .claimed(_):
+            showStatusAlert()
         case .done(_): break
         }
     }
@@ -70,6 +71,9 @@ class ChoreDetailViewController: UIViewController, UITableViewDelegate, UITableV
         guard let chore = chore else { return }
         let updatedChore = choreController?.completeChore(chore)
         self.chore = updatedChore
+        if let gestureRecognizer = statusLabel.gestureRecognizers?.first {
+            statusLabel.removeGestureRecognizer(gestureRecognizer)
+        }
         updateUI()
         guard let updatedChore = updatedChore,
               let occurrence = updatedChore.history.last else { return }

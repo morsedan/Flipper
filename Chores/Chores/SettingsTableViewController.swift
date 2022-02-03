@@ -8,7 +8,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     var choreController: ChoreController?
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "M/D/yyyy"
+        formatter.dateFormat = "M/d/yy"
         return formatter
     }()
     

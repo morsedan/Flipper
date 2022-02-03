@@ -2,7 +2,7 @@ import Foundation
 
 var dateFormatter: DateFormatter {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-DD"
+    formatter.dateFormat = "M/d/yy"
     return formatter
 }
 
@@ -16,5 +16,11 @@ date1 += 5
 print(date1)
 
 var components = DateComponents()
-components.hour = 0
-calendar.
+components.day = 40
+let newDate = Calendar.current.date(byAdding: components, to: date1)!
+let newComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: newDate)
+let otherDate = Calendar.current.date(from: newComponents)!
+
+print(dateFormatter.string(from: date1))
+print(dateFormatter.string(from: newDate))
+print(dateFormatter.string(from: otherDate))
