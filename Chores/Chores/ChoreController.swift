@@ -1,37 +1,19 @@
 import Foundation
 
-
-protocol IDProviderProtocol {
-    func id() -> UUID
-}
-
-class IDProvider: IDProviderProtocol {
-    func id() -> UUID {
-        return UUID()
-    }
-}
-
-
-protocol DateProviderProtocol {
-    func isDateInToday(_: Date) -> Bool
-    // TODO: Add static DateFormatter
-}
-
-extension Calendar: DateProviderProtocol { }
-
 class ChoreController {
     let fileProvider: FileProviderProtocol
+    let calendar: CalendarProtocol
     let dateProvider: DateProviderProtocol
     let idProvider: IDProviderProtocol
     
     var allChores: [Chore] = []
     var todaysChores: [Chore] {
         var chores = allChores.filter { chore in
-            dateProvider.isDateInToday(chore.startDate)
+            calendar.isDateInToday(chore.startDate)
         }
         var completedChores = allChores.filter { chore in
             guard let occurrence = chore.history.last else { return false }
-            return dateProvider.isDateInToday(occurrence.date) && !dateProvider.isDateInToday(chore.startDate)
+            return calendar.isDateInToday(occurrence.date) && !calendar.isDateInToday(chore.startDate)
         }
         for (index, chore) in completedChores.enumerated() {
             if let occurrence = chore.history.last,
@@ -45,9 +27,11 @@ class ChoreController {
     var doers: [ChoreDoer] = []
     
     init(fileProvider: FileProviderProtocol = FileManager.default,
-         dateProvider: DateProviderProtocol = Calendar.current,
+         calendar: CalendarProtocol = Calendar.current,
+         dateProvider: DateProviderProtocol = DateProvider(),
          idProvider: IDProviderProtocol = IDProvider()) {
         self.fileProvider = fileProvider
+        self.calendar = calendar
         self.dateProvider = dateProvider
         self.idProvider = idProvider
         loadFromPersistentStore()
@@ -55,7 +39,7 @@ class ChoreController {
     
     // MARK: Chores
     func addChore(_ choreTitle: String, frequency: ChoreFrequency, startDate: Date) {
-        let chore = Chore(title: choreTitle, choreID: idProvider.id(), status: .unclaimed, frequency: frequency, startDate: startDate)
+        let chore = Chore(title: choreTitle, choreID: idProvider.uuid(), status: .unclaimed, frequency: frequency, startDate: startDate)
         allChores.append(chore)
         allChores.sort { $0.title < $1.title }
         saveToPersistentStore()
@@ -72,7 +56,7 @@ class ChoreController {
               let doer = doers.first(where: { possibleDoer in
                   possibleDoer.choreDoerID == choreID
               }) else { return chore }
-        let choreOccurence = ChoreOccurrence(date: Date(), doer: doer, status: .claimed(doer: doer))
+        let choreOccurence = ChoreOccurrence(date: dateProvider.date(), doer: doer, status: .claimed(doer: doer))
         allChores[index].status = .claimed(doer: doer)
         allChores[index].history.append(choreOccurence)
         saveToPersistentStore()
@@ -82,7 +66,7 @@ class ChoreController {
     func completeChore(_ chore: Chore) -> Chore {
         guard let index = allChores.firstIndex(of: chore),
               let doer = chore.status.doer else { return chore }
-        let choreOccurence = ChoreOccurrence(date: Date(), doer: doer, status: .done(doer: doer))
+        let choreOccurence = ChoreOccurrence(date: dateProvider.date(), doer: doer, status: .done(doer: doer))
         allChores[index].status = .done(doer: doer)
         allChores[index].history.append(choreOccurence)
         allChores[index].status = .unclaimed
@@ -92,7 +76,7 @@ class ChoreController {
     }
     
     func chooseDueDateForChore(_ chore: Chore, toDueDate dueDate: Date) -> Chore {
-        guard dueDate > Date(),
+        guard dueDate > dateProvider.date(),
               let index = allChores.firstIndex(of: chore) else { return chore }
         allChores[index].startDate = dueDate
         allChores[index].status = .unclaimed
@@ -115,7 +99,9 @@ class ChoreController {
         case .yearly:
             components.year = 1
         }
-        guard let newDate = Calendar.current.date(byAdding: components, to: startDate) else { return }
+
+        guard let newDate = calendar.date(byAdding: components, to: startDate) else { return }
+        
         allChores[index].startDate = newDate
         allChores[index].status = .unclaimed
     }
@@ -123,7 +109,7 @@ class ChoreController {
     // TODO: Move doer to it's own controller.
     // MARK: Doers
     func addDoer(_ doerName: String) {
-        let doer = ChoreDoer(name: doerName, choreDoerID: UUID())
+        let doer = ChoreDoer(name: doerName, choreDoerID: idProvider.uuid())
         doers.append(doer)
         doers.sort { $0.name < $1.name }
         saveToPersistentStore()
@@ -177,7 +163,7 @@ class ChoreController {
             allChores = try decoder.decode([Chore].self, from: choreData).sorted { $0.title < $1.title }
             
             for index in 0..<allChores.count {
-                while allChores[index].startDate < Calendar.current.startOfDay(for: Date()) {
+                while allChores[index].startDate < calendar.startOfDay(for: dateProvider.date()) {
                     print("setting date")
                     setNewDateForChore(atIndex: index)
                 }

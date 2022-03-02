@@ -1,10 +1,5 @@
+@testable import Chores
 import Foundation
-
-protocol FileProviderProtocol {
-    func shared() -> FileProviderProtocol
-    func urls(for: FileManager.SearchPathDirectory, in: FileManager.SearchPathDomainMask) -> [URL]
-    func fileExists(atPath: String) -> Bool
-}
 
 class FakeFileProvider: FileProviderProtocol {
     func shared() -> FileProviderProtocol {
@@ -19,11 +14,5 @@ class FakeFileProvider: FileProviderProtocol {
     var fileDoesExists: Bool = false
     func fileExists(atPath: String) -> Bool {
         return fileDoesExists
-    }
-}
-
-extension FileManager: FileProviderProtocol {
-    func shared() -> FileProviderProtocol {
-        return FileManager.default
     }
 }

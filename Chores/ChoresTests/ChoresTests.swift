@@ -3,29 +3,76 @@ import XCTest
 
 class ChoreControllerTests: XCTestCase {
     var choreController: ChoreController!
+    
+    var fileProvider: FakeFileProvider!
+    var calendar: FakeCalendar!
+    var dateProvider: FakeDateProvider!
+    var idProvider: FakeIDProvider!
 
     override func setUpWithError() throws {
-        choreController = ChoreController(fileProvider: FakeFileProvider())
+        
+        fileProvider = FakeFileProvider()
+        calendar = FakeCalendar()
+        dateProvider = FakeDateProvider()
+        idProvider = FakeIDProvider()
+        
+        choreController = ChoreController(
+            fileProvider: fileProvider,
+            calendar: calendar,
+            dateProvider: dateProvider,
+            idProvider: idProvider
+        )
     }
 
     override func tearDownWithError() throws {
         choreController = nil
+        
+        fileProvider = nil
+        calendar = nil
+        dateProvider = nil
+        idProvider = nil
     }
 
     func testAddChore() throws {
         // Given
         XCTAssertEqual(choreController.allChores.count, 0)
-        let expectedChore1 = TestChore(title: "Cook", status: .unclaimed, frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: 500))
-        let expectedChore2 = TestChore(title: "Run away", status: .unclaimed, frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: 9000))
-        
+        let id1 = FakeIDProvider.FakeID.one
+        let expectedChore1 = TestChore(title: "Cook", choreID: id1, status: .unclaimed, frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: 500))
+        let id2 = FakeIDProvider.FakeID.two
+        let expectedChore2 = TestChore(title: "Run away", choreID: id2, status: .unclaimed, frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: 9000))
+
         // When
+        idProvider.uuidToReturn = id2
         choreController.addChore("Run away", frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: 9000))
+        idProvider.uuidToReturn = id1
         choreController.addChore("Cook", frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: 500))
         
         // Then
         XCTAssertTrue(testChores(choreController.allChores, equalTo: [expectedChore1, expectedChore2]))
         XCTAssertTrue(testChores(choreController.todaysChores, equalTo: []))
     }
+    
+    func testDeleteChore() {
+        
+    }
+    
+    func testClaimChore() {
+        
+    }
+    
+    func testCompleteChore() {
+        
+    }
+    
+    func testChooseDateForChore() {
+        
+    }
+    
+    func testTodaysChores() {
+        
+    }
+    
+    
     
     func testAddDoer() {
         XCTAssertEqual(choreController.doers.count, 0)
@@ -37,12 +84,17 @@ class ChoreControllerTests: XCTestCase {
         
         XCTAssertTrue(testDoers(choreController.doers, equalTo: [expectedDoer1, expectedDoer2]))
     }
+    
+    func testDeleteDoer() {
+        
+    }
 }
 
 extension ChoreControllerTests {
     
     struct TestChore {
         let title: String
+        let choreID: UUID
         var status: ChoreStatus
         let frequency: ChoreFrequency
         var startDate: Date
@@ -68,21 +120,24 @@ extension ChoreControllerTests {
                 XCTFail("Titles do not match: got \"\(actualChore.title)\", expected \"\(expectedChore.title)\"")
                 stillTrue = false
             }
-            
+            if actualChore.choreID != expectedChore.choreID {
+                XCTFail("ID's do not match: got \"\(actualChore.choreID)\", expected \"\(expectedChore.choreID)\"")
+                stillTrue = false
+            }
             if actualChore.status != expectedChore.status {
-                XCTFail(" do not match: got \"\(actualChore.status)\", expected \"\(expectedChore.status)\"")
+                XCTFail("Status' do not match: got \"\(actualChore.status)\", expected \"\(expectedChore.status)\"")
                 stillTrue = false
             }
             if actualChore.frequency != expectedChore.frequency {
-                XCTFail(" do not match: got \"\(actualChore.frequency)\", expected \"\(expectedChore.frequency)\"")
+                XCTFail("Frequencies do not match: got \"\(actualChore.frequency)\", expected \"\(expectedChore.frequency)\"")
                 stillTrue = false
             }
             if actualChore.startDate != expectedChore.startDate {
-                XCTFail(" do not match: got \"\(actualChore.startDate)\", expected \"\(expectedChore.startDate)\"")
+                XCTFail("Start dates do not match: got \"\(actualChore.startDate)\", expected \"\(expectedChore.startDate)\"")
                 stillTrue = false
             }
             if actualChore.history != expectedChore.history {
-                XCTFail(" do not match: got \"\(actualChore.history)\", expected \"\(expectedChore.history)\"")
+                XCTFail("Histories do not match: got \"\(actualChore.history)\", expected \"\(expectedChore.history)\"")
                 stillTrue = false
             }
         }

@@ -22,7 +22,14 @@
 		5756CF7E2782661800062E47 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5756CF7D2782661800062E47 /* SettingsTableViewController.swift */; };
 		5756CF84278295B100062E47 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5756CF83278295B100062E47 /* AddItemViewController.swift */; };
 		5756CF8627893F1700062E47 /* ChoreDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5756CF8527893F1700062E47 /* ChoreDetailViewController.swift */; };
-		5771E416279B869700EB1880 /* FileProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5771E415279B869600EB1880 /* FileProvider.swift */; };
+		576BB90B27AE158400FA5D15 /* FakeFileProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576BB90A27AE158400FA5D15 /* FakeFileProvider.swift */; };
+		5771E416279B869700EB1880 /* FileProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5771E415279B869600EB1880 /* FileProviderProtocol.swift */; };
+		57E2C38327AE1AF500C55A23 /* FakeDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2C38227AE1AF500C55A23 /* FakeDateProvider.swift */; };
+		57E2C38527AE1B4600C55A23 /* FakeCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2C38427AE1B4600C55A23 /* FakeCalendar.swift */; };
+		57E2C38727AE1B8D00C55A23 /* CalendarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2C38627AE1B8D00C55A23 /* CalendarProtocol.swift */; };
+		57E2C38A27AE1C4E00C55A23 /* DateProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2C38927AE1C4E00C55A23 /* DateProviderProtocol.swift */; };
+		57E2C38C27AE1C8700C55A23 /* IDProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2C38B27AE1C8700C55A23 /* IDProviderProtocol.swift */; };
+		57E2C38E27AE1CF100C55A23 /* FakeIDProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2C38D27AE1CF100C55A23 /* FakeIDProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +69,14 @@
 		5756CF7D2782661800062E47 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		5756CF83278295B100062E47 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		5756CF8527893F1700062E47 /* ChoreDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreDetailViewController.swift; sourceTree = "<group>"; };
-		5771E415279B869600EB1880 /* FileProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProvider.swift; sourceTree = "<group>"; };
+		576BB90A27AE158400FA5D15 /* FakeFileProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFileProvider.swift; sourceTree = "<group>"; };
+		5771E415279B869600EB1880 /* FileProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderProtocol.swift; sourceTree = "<group>"; };
+		57E2C38227AE1AF500C55A23 /* FakeDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDateProvider.swift; sourceTree = "<group>"; };
+		57E2C38427AE1B4600C55A23 /* FakeCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCalendar.swift; sourceTree = "<group>"; };
+		57E2C38627AE1B8D00C55A23 /* CalendarProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarProtocol.swift; sourceTree = "<group>"; };
+		57E2C38927AE1C4E00C55A23 /* DateProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProviderProtocol.swift; sourceTree = "<group>"; };
+		57E2C38B27AE1C8700C55A23 /* IDProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDProviderProtocol.swift; sourceTree = "<group>"; };
+		57E2C38D27AE1CF100C55A23 /* FakeIDProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeIDProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +134,7 @@
 				5756CF7D2782661800062E47 /* SettingsTableViewController.swift */,
 				5756CF83278295B100062E47 /* AddItemViewController.swift */,
 				5756CF7527823F9500062E47 /* ChoreController.swift */,
-				5771E415279B869600EB1880 /* FileProvider.swift */,
+				57E2C38827AE1BD500C55A23 /* Protocols */,
 				5756CF7727823FC900062E47 /* Chore.swift */,
 				5756CF792782432900062E47 /* ChoreDoer.swift */,
 				5756CF4727823DC300062E47 /* Main.storyboard */,
@@ -135,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				5756CF5827823DCA00062E47 /* ChoresTests.swift */,
+				576BB90D27AE17CD00FA5D15 /* Fakes */,
 			);
 			path = ChoresTests;
 			sourceTree = "<group>";
@@ -146,6 +161,28 @@
 				5756CF6427823DCA00062E47 /* ChoresUITestsLaunchTests.swift */,
 			);
 			path = ChoresUITests;
+			sourceTree = "<group>";
+		};
+		576BB90D27AE17CD00FA5D15 /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				576BB90A27AE158400FA5D15 /* FakeFileProvider.swift */,
+				57E2C38227AE1AF500C55A23 /* FakeDateProvider.swift */,
+				57E2C38427AE1B4600C55A23 /* FakeCalendar.swift */,
+				57E2C38D27AE1CF100C55A23 /* FakeIDProvider.swift */,
+			);
+			path = Fakes;
+			sourceTree = "<group>";
+		};
+		57E2C38827AE1BD500C55A23 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				5771E415279B869600EB1880 /* FileProviderProtocol.swift */,
+				57E2C38627AE1B8D00C55A23 /* CalendarProtocol.swift */,
+				57E2C38927AE1C4E00C55A23 /* DateProviderProtocol.swift */,
+				57E2C38B27AE1C8700C55A23 /* IDProviderProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,12 +320,15 @@
 				5756CF7627823F9500062E47 /* ChoreController.swift in Sources */,
 				5756CF7827823FC900062E47 /* Chore.swift in Sources */,
 				5756CF7E2782661800062E47 /* SettingsTableViewController.swift in Sources */,
-				5771E416279B869700EB1880 /* FileProvider.swift in Sources */,
+				57E2C38C27AE1C8700C55A23 /* IDProviderProtocol.swift in Sources */,
+				5771E416279B869700EB1880 /* FileProviderProtocol.swift in Sources */,
 				5756CF4227823DC300062E47 /* AppDelegate.swift in Sources */,
 				5756CF84278295B100062E47 /* AddItemViewController.swift in Sources */,
 				5756CF8627893F1700062E47 /* ChoreDetailViewController.swift in Sources */,
+				57E2C38A27AE1C4E00C55A23 /* DateProviderProtocol.swift in Sources */,
 				5756CF4427823DC300062E47 /* SceneDelegate.swift in Sources */,
 				5756CF7A2782432900062E47 /* ChoreDoer.swift in Sources */,
+				57E2C38727AE1B8D00C55A23 /* CalendarProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,7 +336,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57E2C38E27AE1CF100C55A23 /* FakeIDProvider.swift in Sources */,
 				5756CF5927823DCA00062E47 /* ChoresTests.swift in Sources */,
+				57E2C38327AE1AF500C55A23 /* FakeDateProvider.swift in Sources */,
+				57E2C38527AE1B4600C55A23 /* FakeCalendar.swift in Sources */,
+				576BB90B27AE158400FA5D15 /* FakeFileProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

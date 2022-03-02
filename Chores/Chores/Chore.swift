@@ -36,7 +36,25 @@ struct ChoreOccurrence: Codable, Equatable {
     let status: ChoreStatus
 }
 
-struct Chore: Equatable, Codable {
+//protocol ChoreProtocol: Equatable {
+//    var title: String { get }
+//    var choreID: UUID { get }
+//    var status: ChoreStatus { get set }
+//    var frequency: ChoreFrequency { get }
+//    var startDate: Date { get set }
+//    var history: [ChoreOccurrence] { get set }
+//
+//    static func ==(lhs: ChoreProtocol, rhs: ChoreProtocol) {
+//        return lhs.title == rhs.title &&
+//        lhs.choreID == rhs.choreID &&
+//        lhs.status == rhs.status &&
+//        lhs.frequency == rhs.frequency &&
+//        lhs.startDate == rhs.startDate &&
+//        lhs.history == rhs.history
+//    }
+//}
+
+struct Chore: Codable, Equatable {
     let title: String
     let choreID: UUID
     var status: ChoreStatus
@@ -45,6 +63,11 @@ struct Chore: Equatable, Codable {
     var history: [ChoreOccurrence] = []
     
     static func == (lhs: Chore, rhs: Chore) -> Bool {
-        return lhs.choreID == rhs.choreID
+        return lhs.title == rhs.title &&
+        lhs.choreID == rhs.choreID &&
+        lhs.status == rhs.status &&
+        lhs.frequency == rhs.frequency &&
+        lhs.startDate == rhs.startDate &&
+        lhs.history == rhs.history
     }
 }
