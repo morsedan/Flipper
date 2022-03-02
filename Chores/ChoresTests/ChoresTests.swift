@@ -86,7 +86,14 @@ class ChoreControllerTests: XCTestCase {
     }
     
     func testDeleteDoer() {
+        choreController.addDoer("Worker")
+        choreController.addDoer("Munchkin")
+        let doer1 = choreController.doers[0]
+        let doer2 = choreController.doers[1]
         
+        choreController.deleteDoer(doer1)
+        
+        XCTAssertEqual(choreController.doers, [doer2])
     }
 }
 
