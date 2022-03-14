@@ -2,9 +2,9 @@
 import Foundation
 
 class FakeCalendar: CalendarProtocol {
-    var dateInToday = false
-    func isDateInToday(_: Date) -> Bool {
-        return dateInToday
+    var fakeDateForToday: Date = Date(timeIntervalSinceReferenceDate: 0)
+    func isDateInToday(_ date: Date) -> Bool {
+        return Calendar.current.isDate(date, inSameDayAs: fakeDateForToday)
     }
     
     var startOfDayToReturn: Date = Date()

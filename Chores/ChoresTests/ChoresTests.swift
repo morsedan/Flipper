@@ -69,7 +69,15 @@ class ChoreControllerTests: XCTestCase {
     }
     
     func testTodaysChores() {
+        let oneDay: TimeInterval = 60 * 60 * 24
+        calendar.fakeDateForToday = Date(timeIntervalSinceReferenceDate: (oneDay + 1))
+        let choreForYesterday = Chore(title: "yesterday", choreID: FakeIDProvider.FakeID.one, status: .unclaimed, frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: 1))
+        let choreForToday = Chore(title: "today", choreID: FakeIDProvider.FakeID.two, status: .unclaimed, frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: (oneDay + 5)))
+        let choreForTomorrow = Chore(title: "tomorrow", choreID: FakeIDProvider.FakeID.three, status: .unclaimed, frequency: .daily, startDate: Date(timeIntervalSinceReferenceDate: (oneDay + oneDay + 10)))
         
+        choreController.allChores = [choreForYesterday, choreForToday, choreForTomorrow]
+        
+        XCTAssertEqual(choreController.todaysChores, [choreForToday])
     }
     
     
