@@ -53,7 +53,6 @@ class ChoreControllerTests: XCTestCase {
     }
     
     func testDeleteChore() {
-        
     }
     
     func testClaimChore() {
